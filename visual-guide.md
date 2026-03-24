@@ -1,0 +1,464 @@
+# Visual Workflow Guide
+
+ASCII diagrams to visualize agent orchestration patterns.
+
+---
+
+## 🎭 The Four Agents
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AGENT ECOSYSTEM                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│   ┌──────────────┐                                         │
+│   │ Orchestrator │  ← Coordinates everything              │
+│   │  (Manager)   │     Never implements                   │
+│   └───────┬──────┘                                         │
+│           │ calls                                          │
+│           │                                                │
+│      ┌────┴────┬────────────┬─────────────┐              │
+│      │         │            │             │              │
+│  ┌───▼───┐ ┌──▼───┐   ┌────▼────┐   ┌───▼────┐         │
+│  │Planner│ │Coder │   │Designer │   │(Future)│         │
+│  │ Plans │ │Codes │   │Designs  │   │Agents? │         │
+│  └───────┘ └──────┘   └─────────┘   └────────┘         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🔄 Complete Workflow
+
+```
+USER REQUEST
+     │
+     │ "Add dark mode to the app"
+     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ORCHESTRATOR: Receives Request                             │
+│ - Understands: User wants dark mode feature                │
+│ - Next Action: Need a plan first                           │
+└────────────────────┬────────────────────────────────────────┘
+                     │ delegates
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ PLANNER: Creates Implementation Plan                        │
+│ - Researches codebase                                       │
+│ - Identifies patterns                                       │
+│ - Creates step-by-step plan                                 │
+│ - Notes file dependencies                                   │
+│ Returns: Detailed plan with 6 steps                         │
+└────────────────────┬────────────────────────────────────────┘
+                     │ returns plan
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ORCHESTRATOR: Parses Plan into Phases                      │
+│ - Analyzes file dependencies                                │
+│ - Groups parallel-safe tasks                                │
+│ - Sequences dependent tasks                                 │
+│ Result: 4 phases identified                                 │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     ├─ PHASE 1 (Parallel) ─────────────────┐
+                     │                                        │
+         ┌───────────┴──────────┬──────────────────┐        │
+         │                      │                   │        │
+    ┌────▼────┐           ┌────▼────┐        ┌────▼────┐   │
+    │  Coder  │           │Designer │        │Designer │   │
+    │         │           │         │        │         │   │
+    │ Create  │           │ Design  │        │ Define  │   │
+    │ Context │           │ Toggle  │        │ Tokens  │   │
+    │         │           │         │        │         │   │
+    │ ✓ Done  │           │ ✓ Done  │        │ ✓ Done  │   │
+    └─────────┘           └─────────┘        └─────────┘   │
+         │                      │                   │        │
+         └──────────────────────┴───────────────────┘        │
+                     │                                        │
+                     │ Phase 1 Complete ◄────────────────────┘
+                     ▼
+         ┌───────────────────────┐
+         │ ORCHESTRATOR: Report  │
+         │ "Phase 1 complete ✓"  │
+         └───────────┬───────────┘
+                     │
+                     ├─ PHASE 2 (Sequential) ────────────────┐
+                     │                                        │
+                ┌────▼────┐                                   │
+                │  Coder  │                                   │
+                │         │                                   │
+                │  Build  │                                   │
+                │ Toggle  │                                   │
+                │Component│                                   │
+                │         │                                   │
+                │ ✓ Done  │                                   │
+                └─────────┘                                   │
+                     │                                        │
+                     │ Phase 2 Complete ◄────────────────────┘
+                     ▼
+         ┌───────────────────────┐
+         │ ORCHESTRATOR: Report  │
+         │ "Phase 2 complete ✓"  │
+         └───────────┬───────────┘
+                     │
+                     ├─ PHASE 3 (Sequential) ────────────────┐
+                     │                                        │
+                ┌────▼────┐                                   │
+                │  Coder  │                                   │
+                │         │                                   │
+                │Integrate│                                   │
+                │Provider │                                   │
+                │         │                                   │
+                │ ✓ Done  │                                   │
+                └─────────┘                                   │
+                     │                                        │
+                     │ Phase 3 Complete ◄────────────────────┘
+                     ▼
+         ┌───────────────────────┐
+         │ ORCHESTRATOR: Report  │
+         │ "Phase 3 complete ✓"  │
+         └───────────┬───────────┘
+                     │
+                     ├─ PHASE 4 (Sequential) ────────────────┐
+                     │                                        │
+                ┌────▼────┐                                   │
+                │  Coder  │                                   │
+                │         │                                   │
+                │ Apply   │                                   │
+                │ Theme   │                                   │
+                │ Styles  │                                   │
+                │         │                                   │
+                │ ✓ Done  │                                   │
+                └─────────┘                                   │
+                     │                                        │
+                     │ Phase 4 Complete ◄────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ORCHESTRATOR: Final Verification                           │
+│ - Check theme works                                         │
+│ - Verify persistence                                        │
+│ - Test all components                                       │
+│ Status: All checks passed ✓                                 │
+└────────────────────┬────────────────────────────────────────┘
+                     │ report
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ORCHESTRATOR: Report to User                                │
+│                                                             │
+│ ✅ Dark mode implementation complete!                       │
+│                                                             │
+│ Completed:                                                  │
+│ • Theme context with persistence                            │
+│ • Toggle component with animations                          │
+│ • Applied theme across all components                       │
+│                                                             │
+│ You can now toggle dark mode in the header!                 │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     ▼
+                   USER
+            (Sees completed feature)
+```
+
+---
+
+## ⚡ Parallelization Decision Tree
+
+```
+                    NEW TASK
+                       │
+                       ▼
+          ┌────────────────────────┐
+          │ Does it touch the      │
+          │ same files as an       │
+          │ in-progress task?      │
+          └───────┬────────────────┘
+                  │
+         ┌────────┴────────┐
+         │                 │
+        YES               NO
+         │                 │
+         │                 ▼
+         │    ┌────────────────────────┐
+         │    │ Does it depend on      │
+         │    │ output from another    │
+         │    │ in-progress task?      │
+         │    └───────┬────────────────┘
+         │            │
+         │    ┌───────┴────────┐
+         │    │                │
+         │   YES              NO
+         │    │                │
+         ▼    ▼                ▼
+    ┌──────────────┐    ┌──────────────┐
+    │   RUN IT     │    │   RUN IT     │
+    │ SEQUENTIALLY │    │ IN PARALLEL  │
+    │   (Wait)     │    │  (Now!)      │
+    └──────────────┘    └──────────────┘
+```
+
+---
+
+## 📁 File Conflict Scenarios
+
+### ✅ SAFE: Different Files
+
+```
+┌─────────────────────────────┐
+│ PHASE 1: Parallel Execution │
+├─────────────────────────────┤
+│                             │
+│  Task A              Task B │
+│  ┌──────────┐    ┌─────────┤
+│  │ Creates  │    │ Creates ││
+│  │  auth    │    │  theme  ││
+│  │ Context  │    │ Context ││
+│  │          │    │         ││
+│  │ File:    │    │ File:   ││
+│  │ Auth.tsx │    │Theme.tsx││
+│  └──────────┘    └─────────┤
+│       │               │     │
+│       ▼               ▼     │
+│   No Conflict!              │
+│   ✓ Both run together       │
+└─────────────────────────────┘
+```
+
+### ❌ CONFLICT: Same File
+
+```
+┌─────────────────────────────┐
+│  BAD: Attempted Parallel    │
+├─────────────────────────────┤
+│                             │
+│  Task A          Task B     │
+│  ┌───────────┐ ┌──────────┐│
+│  │   Add     │ │   Add    ││
+│  │  Theme    │ │  Router  ││
+│  │ Provider  │ │          ││
+│  │           │ │          ││
+│  │ File:     │ │ File:    ││
+│  │ App.tsx   │ │ App.tsx  ││
+│  └───────────┘ └──────────┘│
+│       │            │        │
+│       ▼            ▼        │
+│     CONFLICT! ❌             │
+│  Edits overwrite each other │
+└─────────────────────────────┘
+
+  SOLUTION: Run Sequentially
+┌─────────────────────────────┐
+│   GOOD: Sequential          │
+├─────────────────────────────┤
+│ Phase 1:                    │
+│  Task A → App.tsx ✓         │
+│                             │
+│ Phase 2: (after Phase 1)    │
+│  Task B → App.tsx ✓         │
+│                             │
+│ ✓ No conflict!              │
+└─────────────────────────────┘
+```
+
+---
+
+## 🎯 Delegation Pattern
+
+### ❌ Wrong: Telling HOW
+
+```
+Orchestrator: "Add a useState hook called 'theme' 
+               and a useEffect to save to localStorage,
+               then create a function setTheme that 
+               updates the state..."
+
+     │
+     ▼
+ Coder: (Just follows instructions blindly)
+        May not match project patterns
+        No room for expertise
+```
+
+### ✅ Right: Telling WHAT
+
+```
+Orchestrator: "Create a theme context with persistence"
+
+     │
+     ▼
+ Coder: - Analyzes existing code
+        - Sees project uses Context API
+        - Notices localStorage pattern
+        - Implements using project style
+        ✓ Result: Consistent, quality code
+```
+
+---
+
+## 🔄 State Machine View
+
+```
+┌──────────────────────────────────────────────────┐
+│              ORCHESTRATOR STATES                  │
+└──────────────────────────────────────────────────┘
+
+    START
+      │
+      ▼
+ ┌─────────┐
+ │ RECEIVE │ ← User request arrives
+ │ REQUEST │
+ └────┬────┘
+      │
+      ▼
+ ┌─────────┐
+ │  CALL   │ → Planner: "Create plan"
+ │ PLANNER │
+ └────┬────┘
+      │
+      ▼
+ ┌─────────┐
+ │  PARSE  │ → Analyze dependencies
+ │  PLAN   │   Create phases
+ └────┬────┘
+      │
+      ▼
+ ┌─────────┐
+ │ EXECUTE │ → Delegate to agents
+ │ PHASE 1 │   Wait for completion
+ └────┬────┘
+      │
+      ▼
+ ┌─────────┐
+ │ EXECUTE │ → Next phase
+ │ PHASE 2 │   (if exists)
+ └────┬────┘
+      │
+      ▼
+ ┌─────────┐
+ │ VERIFY  │ → Check everything works
+ └────┬────┘
+      │
+      ▼
+ ┌─────────┐
+ │ REPORT  │ → Tell user results
+ └────┬────┘
+      │
+      ▼
+     END
+```
+
+---
+
+## 🧩 Agent Responsibility Matrix
+
+```
+┌─────────────┬─────────┬─────────┬──────────┬──────────┐
+│  Activity   │  Orch.  │ Planner │  Coder   │ Designer │
+├─────────────┼─────────┼─────────┼──────────┼──────────┤
+│ Coordinate  │    ✓    │         │          │          │
+│ Delegate    │    ✓    │         │          │          │
+│ Plan        │         │    ✓    │          │          │
+│ Research    │         │    ✓    │    ✓     │    ✓     │
+│ Write Code  │         │         │    ✓     │          │
+│ Design UI   │         │         │          │    ✓     │
+│ Edit Files  │         │         │    ✓     │          │
+│ Report      │    ✓    │         │          │          │
+└─────────────┴─────────┴─────────┴──────────┴──────────┘
+```
+
+---
+
+## 🎓 Learning Path Visualization
+
+```
+START HERE
+    │
+    ▼
+┌──────────────────┐
+│ Understand       │  Read: concepts.md
+│ Core Concepts    │  Time: 20 minutes
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Study Example    │  Read: example-workflow.md
+│ Workflow         │  Time: 30 minutes
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Setup System     │  Follow: setup-guide.md
+│                  │  Time: 15 minutes
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Try Simple Task  │  Example: Add button
+│                  │  Time: 10 minutes
+└────────┬─────────┘
+         │
+         ├─ Success? ────┐
+         │                │
+        NO               YES
+         │                │
+         ▼                ▼
+    Troubleshoot    ┌──────────────────┐
+    (setup-guide)   │ Try Medium Task  │
+         │          │ Example: Todo    │
+         │          │ Time: 30 minutes │
+         │          └────────┬─────────┘
+         │                   │
+         └───────────────────┤
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Complex Project  │
+                    │ Example: Dark    │
+                    │ Mode Full Impl   │
+                    │ Time: 1 hour     │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Customize Agents │
+                    │ Add your own     │
+                    │ patterns         │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                          EXPERT!
+                    You understand
+                    orchestration! 🎉
+```
+
+---
+
+## 🎯 Decision Flow for Task Assignment
+
+```
+                NEW TASK IDENTIFIED
+                        │
+                        ▼
+            ┌───────────────────────┐
+            │ What type of work?    │
+            └───────┬───────────────┘
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+        ▼           ▼           ▼
+   ┌────────┐  ┌────────┐  ┌────────┐
+   │Planning│  │  Code  │  │  UI/UX │
+   │Strategy│  │ Impl.  │  │ Design │
+   └───┬────┘  └───┬────┘  └───┬────┘
+       │           │           │
+       ▼           ▼           ▼
+   ┌────────┐  ┌────────┐  ┌────────┐
+   │Planner │  │ Coder  │  │Designer│
+   └────────┘  └────────┘  └────────┘
+```
+
+---
+
+**These visualizations help understand the flow and relationships! 🎨**
